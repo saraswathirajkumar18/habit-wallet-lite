@@ -1,0 +1,48 @@
+name: Flutter CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Flutter Analyze, Test & Release Build
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout repo
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Setup Flutter
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'stable'  # choose your flutter version
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: flutter pub get
+
+      # 4. Analyze code
+      - name: Flutter Analyze
+        run: flutter analyze
+
+      # 5. Run tests with coverage
+      - name: Flutter Test with Coverage
+        run: flutter test --coverage
+
+      # 6. Build release APK (or use appbundle)
+      - name: Build Release APK
+        run: flutter build apk --release
+
+      # Optional: Upload coverage report
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage/lcov.info
