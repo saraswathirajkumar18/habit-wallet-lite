@@ -34,4 +34,17 @@ class TransactionNotifier extends StateNotifier<List<TransactionModel>> {
     await repo.sync();
     state = repo.fetchFromHive();
   }
+   /// UPDATE (EDIT)
+  Future<void> update(TransactionModel tx) async {
+    await repo.update(tx);
+    state = repo.fetchFromHive();
+  }
+
+  /// DELETE
+  Future<void> delete(String id) async {
+    await repo.delete(id);
+    state = repo.fetchFromHive();
+  }
+
+ 
 }

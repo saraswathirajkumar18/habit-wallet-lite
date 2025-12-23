@@ -1,4 +1,6 @@
+
 import 'package:hive/hive.dart';
+part 'transaction_model.g.dart';
 
 @HiveType(typeId: 1)
 class TransactionModel extends HiveObject {
@@ -6,7 +8,7 @@ class TransactionModel extends HiveObject {
   String id;
 
   @HiveField(1)
-  String type; // income / expense
+  String type;
 
   @HiveField(2)
   double amount;

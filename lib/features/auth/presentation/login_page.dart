@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:habit_wallet_lite/features/main_page.dart';
 import 'package:habit_wallet_lite/features/transactions/presentation/screens/home_page.dart';
 
 import 'login_provider.dart';
@@ -17,7 +18,7 @@ class LoginPage extends ConsumerWidget {
       if (next.isLoggedIn && prev?.isLoggedIn == false) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const HomePage()),
+          MaterialPageRoute(builder: (_) => MainPage()),
         );
       }
 

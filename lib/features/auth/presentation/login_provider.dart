@@ -48,8 +48,8 @@ class LoginNotifier extends StateNotifier<LoginState> {
   LoginNotifier(this.repo) : super(LoginState.initial()) {
     loadSavedCredentials(); 
   }
-  Future<void> login(String email, String pin) async {
-  state = state.copyWith(loading: true, error: null);
+  Future<void> login(String email, String pin, {bool autoLogin = false}) async {
+  state = state.copyWith(loading: true, error: null, email: email);
 
   try {
     final success = await repo.login(email, pin);
@@ -57,20 +57,18 @@ class LoginNotifier extends StateNotifier<LoginState> {
     if (success) {
       if (state.rememberMe) {
         await repo.saveCredentials(email, pin);
-       }
-      // else {
-      //   await repo.clearCredentials();
-      // }
+      } else if (!autoLogin) {
+        await repo.clearCredentials();
+      }
 
       state = state.copyWith(
         loading: false,
-        isLoggedIn: true, 
-        email: email,
+        isLoggedIn: true,
       );
     } else {
       state = state.copyWith(
         loading: false,
-         isLoggedIn: false,
+        isLoggedIn: false,
         error: 'Invalid email or PIN',
       );
     }
@@ -83,19 +81,22 @@ class LoginNotifier extends StateNotifier<LoginState> {
   }
 }
 
-
-  /// Load saved credentials for "Remember me"
   Future<void> loadSavedCredentials() async {
-    final savedPin = await repo.getPin();
-    final savedEmail = savedPin != null ? await repo.getEmail() : null;
+  final savedEmail = await repo.getEmail();
+  final savedPin = await repo.getPin();
 
-    if (savedEmail != null) {
-      state = state.copyWith(
-        email: savedEmail,
-        rememberMe: true,
-      );
-    }
+  if (savedEmail != null && savedPin != null) {
+    // Mark Remember Me true
+    state = state.copyWith(
+      email: savedEmail,
+      rememberMe: true,
+    );
+
+    // Automatically login
+    await login(savedEmail, savedPin, autoLogin: true);
   }
+}
+
 
   /// Update Remember Me toggle
   void updateRememberMe(bool value) {

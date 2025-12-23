@@ -12,10 +12,25 @@ class TransactionRepository {
     return local.getAll();
   }
 
+  /// ADD
   Future<void> save(TransactionModel tx) async {
+    tx.editedLocally = true;
     await local.save(tx);
   }
 
+  /// EDIT
+  Future<void> update(TransactionModel tx) async {
+    tx.editedLocally = true;
+    await local.save(tx); // same key → overwrite
+  }
+
+  /// DELETE
+  Future<void> delete(String id) async {
+    await local.delete(id);
+  
+  }
+
+  /// SYNC
   Future<void> sync() async {
     final edited = local
         .getAll()
@@ -26,7 +41,7 @@ class TransactionRepository {
 
     for (final tx in edited) {
       tx.editedLocally = false;
-      await tx.save();
+      await tx.save(); // HiveObject save
     }
   }
 }

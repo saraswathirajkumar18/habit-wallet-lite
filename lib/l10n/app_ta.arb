@@ -1,0 +1,8 @@
+{
+  "appTitle": "ஹேபிட் வாலட் லைட்",
+  "login": "உள் நுழைவு",
+  "logout": "வெளியேறு",
+  "totalIncome": "மொத்த வரவு",
+  "totalExpense": "மொத்த செலவு",
+  "transactions": "{count, plural, =0{ஒரு வணிகமும் இல்லை} =1{1 வணிகம்} other{{count} வணிகங்கள்}}"
+}

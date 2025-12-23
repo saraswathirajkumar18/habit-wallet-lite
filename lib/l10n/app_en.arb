@@ -1,0 +1,8 @@
+{
+  "appTitle": "Habit Wallet Lite",
+  "login": "Login",
+  "logout": "Logout",
+  "totalIncome": "Total Income",
+  "totalExpense": "Total Expense",
+  "transactions": "{count} transaction(s)"
+}

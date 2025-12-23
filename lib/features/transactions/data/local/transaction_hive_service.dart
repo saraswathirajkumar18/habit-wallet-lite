@@ -15,4 +15,8 @@ class TransactionHiveService {
     tx.updatedAt = DateTime.now();
     await box.put(tx.id, tx);
   }
+  Future<void> delete(String id) async {
+    await box.delete(id);
+  }
+  
 }
