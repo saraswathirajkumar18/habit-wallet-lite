@@ -12,10 +12,10 @@ class LoginState {
   final String? email;
 
   const LoginState({
-    required this.loading,
+    this.loading = false, 
     required this.isLoggedIn,
     this.error,
-    required this.rememberMe,
+     this.rememberMe = false,
     this.email,
   });
 
@@ -70,12 +70,14 @@ class LoginNotifier extends StateNotifier<LoginState> {
     } else {
       state = state.copyWith(
         loading: false,
+         isLoggedIn: false,
         error: 'Invalid email or PIN',
       );
     }
   } catch (e) {
     state = state.copyWith(
       loading: false,
+      isLoggedIn: false,
       error: 'Something went wrong',
     );
   }
@@ -98,6 +100,7 @@ class LoginNotifier extends StateNotifier<LoginState> {
   /// Update Remember Me toggle
   void updateRememberMe(bool value) {
     state = state.copyWith(rememberMe: value);
+    
   }
 
   /// Logout

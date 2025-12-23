@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:habit_wallet_lite/features/home/presentation/home_page.dart';
+import 'package:habit_wallet_lite/features/transactions/presentation/screens/home_page.dart';
 
 import 'login_provider.dart';
 
@@ -32,9 +32,9 @@ class LoginPage extends ConsumerWidget {
     final state = ref.watch(loginProvider);
 
     // Autofill saved email (once)
-    if (state.email != null && _emailController.text.isEmpty) {
-      _emailController.text = state.email!;
-    }
+    // if (state.email != null && _emailController.text.isEmpty) {
+    //   _emailController.text = state.email!;
+    // }
 
     return Scaffold(
       appBar: AppBar(title: const Text("Login")),
