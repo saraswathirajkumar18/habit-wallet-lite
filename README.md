@@ -219,13 +219,7 @@ flutter build apk --release
 * **Performance**
 
   * Smooth scrolling verified with `ListView.builder` and list virtualization
-  * Jank < 1% on profile page
-* **Startup**
 
-  * Cold start < 1.2s on mid-range Android device (4GB RAM)
-* **App size**
-
-  * ~12 MB APK (release build)
 * **Testing**
 
   * Login unit + widget tests pass individually
