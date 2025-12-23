@@ -23,23 +23,6 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       title: 'Habit Wallet Lite',
-//       theme: ThemeData.light(),
-//       darkTheme: ThemeData.dark(),
-//       home: SplashScreen(),
-//     );
-//   }
-//}
-
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 

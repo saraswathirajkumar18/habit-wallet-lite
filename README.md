@@ -1,12 +1,13 @@
 # Habit Wallet Lite (Offline-first Mini PFM)
+Habit Wallet Lite is a lightweight personal finance manager (PFM) designed for offline-first usage. It supports transactions, categories, attachments, summaries, authentication, theming, and multilingual support, all following Clean Architecture and Riverpod state management.
 
-![CI Badge](https://img.shields.io/badge/build-passing-brightgreen)
+GitHub repo link: https://github.com/saraswathirajkumar18/habit-wallet-lite
 
-**Habit Wallet Lite** is a lightweight personal finance manager (PFM) designed for offline-first usage. It supports transactions, categories, attachments, summaries, authentication, theming, and multilingual support, all following **Clean Architecture** and **Riverpod state management**.
+CI badge: [![Flutter CI](https://github.com/saraswathirajkumar18/habit-wallet-lite/actions/workflows/flutter-ci.yml/badge.svg)](https://github.com/saraswathirajkumar18/habit-wallet-lite/actions/workflows/flutter-ci.yml)
 
 ---
 
-## 📦 Features
+## Features
 
 * **Transactions**
 
@@ -23,8 +24,7 @@
 * **Offline-first**
 
   * Local database (Drift/Isar/Hive)
-  * Background sync to mock REST API
-  * Conflict handling: last-write-wins
+  
 * **Authentication**
 
   * Email + PIN with `flutter_secure_storage`
@@ -32,19 +32,11 @@
 * **Theming & Accessibility**
 
   * Light/dark theme, can toggle in Profile
-  * Scalable text & VoiceOver/talkback labels
+ 
 * **i18n**
 
   * English + Tamil
-* **Navigation & deep link**
 
-  * `app://tx/{id}` opens transaction detail
-* **Notifications**
-
-  * Daily reminder at 8 PM if no entries
-* **Error handling**
-
-  * Snackbar/toast + retry, global crash handler
 * **Performance**
 
   * Smooth scrolling with list virtualization
@@ -53,7 +45,7 @@
   * Domain / Data / Presentation separation
 * **State management**
 
-  * Riverpod + Freezed + JsonSerializable
+  * Riverpod 
 * **Linting**
 
   * `flutter_lints` with 0 warnings
@@ -66,90 +58,163 @@
 
 ---
 
-## 🏗 Architecture
+## Project Structure
 
-```
-lib/
-├─ features/
-│  ├─ auth/
-│  │  ├─ data/
-│  │  │  ├─ datasources/  # Local DB, SecureStorage
-│  │  │  └─ repositories/
-│  │  ├─ domain/
-│  │  │  ├─ entities/
-│  │  │  └─ repositories/  # abstract
-│  │  └─ presentation/
-│  │     ├─ providers/  # Riverpod
-│  │     └─ pages/
-│  ├─ transactions/
-│  │  └─ ...
-├─ core/
-│  ├─ storage/  # SecureStorage, local DB
-│  ├─ utils/
-│  └─ theme/
-└─ main.dart
-```
+HABIT_WALLET_LITE
+├── lib
+│   ├── core
+│   │   └── providers
+│   │       ├── language_provider.dart
+│   │       └── theme_provider.dart
+│
+│   ├── features
+│   │
+│   │   ├── auth
+│   │   │   ├── data
+│   │   │   │   ├── datasources
+│   │   │   │   │   └── auth_local_data_source.dart
+│   │   │   │   └── auth_repository_impl.dart
+│   │   │   ├── domain
+│   │   │   │   └── auth_repository.dart
+│   │   │   └── presentation
+│   │   │       ├── login_page.dart
+│   │   │       └── login_provider.dart
+│   │
+│   │   ├── profile
+│   │   │   └── presentation
+│   │   │       └── profile_screen.dart
+│   │
+│   │   ├── summary
+│   │   │   ├── data
+│   │   │   │   └── summary_repository.dart
+│   │   │   ├── domain
+│   │   │   │   └── summary_model.dart
+│   │   │   └── presentation
+│   │   │       ├── providers
+│   │   │       │   └── summary_provider.dart
+│   │   │       └── screens
+│   │   │           └── summary_screen.dart
+│   │
+│   │   └── transactions
+│   │       ├── core
+│   │       │   ├── constants
+│   │       │   │   └── transaction_constants.dart
+│   │       │   ├── db
+│   │       │   │   └── hive_boxes.dart
+│   │       │   ├── network
+│   │       │   │   └── api_client.dart
+│   │       │   └── utils
+│   │       │       └── id_generator.dart
+│   │       │
+│   │       ├── data
+│   │       │   ├── local
+│   │       │   │   └── transaction_hive_service.dart
+│   │       │   ├── models
+│   │       │   │   ├── transaction_model.dart
+│   │       │   │   └── transaction_model.g.dart
+│   │       │   ├── remote
+│   │       │   │   └── transaction_api_service.dart
+│   │       │   └── repository
+│   │       │       └── transaction_repository.dart
+│   │       │
+│   │       └── presentation
+│   │           ├── providers
+│   │           │   └── transaction_provider.dart
+│   │           ├── screens
+│   │           │   ├── add_transaction_screen.dart
+│   │           │   ├── edit_transaction_page.dart
+│   │           │   └── home_page.dart
+│   │           └── widgets
+│   │               └── transaction_tile.dart
+│
+│   ├── main_page.dart
+│   ├── splash_screen.dart
+│
+│   ├── l10n
+│   │   ├── app_en.arb
+│   │   └── app_ta.arb
+│
+│   └── main.dart
+│
+├── pubspec.yaml
+└── README.md
 
-* **Domain**: Entities, use cases, repository interfaces
+
+* **Domain**: repository interfaces
 * **Data**: Implementations, local storage, API mocks
 * **Presentation**: Riverpod providers, UI pages, widgets
 * **DI**: Providers wired in `providers.dart` or `main.dart`
 
 ---
 
-## ⚙️ Setup
+## Architecture diagram 
+
+┌─────────────────────────┐
+│        Presentation     |
+│-------------------------│
+│ LoginPage, ProfilePage, │
+│ TransactionsPage        │
+│ Providers (Riverpod)    │
+└─────────┬───────────────┘
+          │ Uses
+          ▼
+┌─────────────────────────┐
+│         Domain          |
+│-------------------------│
+│ Entities: Transaction   │
+│ Repository interfaces   │
+│ Use cases: login, addTx,│
+│ editTx, fetchSummary    │
+└─────────┬───────────────┘
+          │ Implemented by
+          ▼
+┌───────────────────────── ┐
+│          Data            │
+│------------------------- │
+│ Repositories (impl)      │
+│ Local data sources: Hive │
+│ Remote data sources: API │
+│ SecureStorage wrapper    │
+└───────────────────────── ┘
+
+
+## Setup
 
 1. **Clone the repository**
 
-```bash
-git clone <repo_url>
+git clone https://github.com/saraswathirajkumar18/habit-wallet-lite.git
 cd habit_wallet_lite
-```
 
 2. **Install dependencies**
 
-```bash
 flutter pub get
-```
 
 3. **Run the app**
 
-```bash
 flutter run
-```
 
 4. **Run tests**
 
 * Unit and widget tests:
 
-```bash
 flutter test
-```
 
 * Run single test file:
 
-```bash
 flutter test test/features/auth/login_notifier_test.dart
-```
 
 5. **Build release APK**
 
-```bash
 flutter build apk --release
-```
-
 ---
 
-## 💡 Trade-offs
+## Trade-offs
 
-* Used **Hive** for local DB for simplicity; could use Drift for relational queries if needed.
+* Used **Hive** for local DB for simplicity.
 * Only **login page fully tested**; other pages can be tested in future iterations.
-* Mock REST API instead of real backend for offline-first testing.
-* Charts use simple `charts_flutter` line/bar charts for performance; heavy charts not included.
+* Charts use simple `flutter chart` line/bar charts for performance; heavy charts not included.
 
----
-
-## 📊 Profiling Notes
+## Profiling Notes
 
 * **Performance**
 
@@ -168,36 +233,32 @@ flutter build apk --release
 
 ---
 
-## 🧪 Testing
+## Testing
 
 * **Unit tests**: `LoginNotifier`, validation logic
 * **Widget tests**: `LoginPage`, Remember Me, navigation
-* **Tips**
-
-  * Wrap widgets in `ProviderScope` for Riverpod
-  * Override providers for mocks (`MockAuthRepo`)
-  * Use `tester.pumpAndSettle()` for async navigation & rebuild
-
 ---
 
-## 📌 Notes
+## Notes
 
 * **Theme toggle** available in Profile page
-* **Localization** in English + Tamil (plurals handled)
-* **Offline edits** flagged with “edited locally” badge
-* **DI** handled via Riverpod providers and optional `ProviderContainer` overrides for testing
+* **Localization** in English + Tamil 
+* **Offline edits** flagged with “edited” badge
+* **DI** handled via Riverpod providers 
 
 ---
+## Screenshots
 
-## 📂 Future Improvements
-
-* Full unit/widget tests for **transactions, categories, summaries**
-* Implement **real REST API backend**
-* Add **graphical analytics**, export CSV/PDF reports
-* Push notifications for reminders
-
----
-
-I can also **create a diagram for architecture** to include in the README if you want—it will visually show **domain → data → presentation → UI flow**.
-
-Do you want me to make that architecture diagram for the README?
+![alt text](screenshots/splash_screen.jpeg)
+![alt text](screenshots/login_screen.jpeg)
+![alt text](screenshots/home_screen.jpeg)
+![alt text](screenshots/add_transaction.jpeg)
+![alt text](screenshots/update_menu_option.jpeg)
+![alt text](screenshots/edit_tranasction.jpeg)
+![alt text](screenshots/home_after_update_tranasction.jpeg)
+![alt text](screenshots/home_after_delete_tranasction.jpeg) 
+![alt text](screenshots/summary_screen.jpeg) 
+![alt text](screenshots/profile_screen.jpeg)   
+![alt text](screenshots/profile_page_after_language_selection.jpeg) 
+![alt text](screenshots/profile_page_dark_mode.jpeg) 
+![alt text](screenshots/after_logout.jpeg)
