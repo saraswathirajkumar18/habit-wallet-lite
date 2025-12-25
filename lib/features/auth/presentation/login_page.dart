@@ -1,36 +1,73 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:habit_wallet_lite/features/main_page.dart';
-import 'package:habit_wallet_lite/features/transactions/presentation/screens/home_page.dart';
 
 import 'login_provider.dart';
 
 
-class LoginPage extends ConsumerWidget {
-  LoginPage({Key? key}) : super(key: key);
+class LoginPage extends ConsumerStatefulWidget {
+  LoginPage({super.key});
+  
+  @override
+  ConsumerState<LoginPage> createState() => _LoginPageState();
+}
 
+class _LoginPageState extends ConsumerState<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _pinController = TextEditingController();
+@override
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen<LoginState>(loginProvider, (prev, next) {
-      if (next.isLoggedIn && prev?.isLoggedIn == false) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => MainPage()),
-        );
-      }
-
-      // Show error only when error changes
-      if (next.error != null && prev?.error != next.error) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(next.error!)),
-        );
-      }
-    });
-
+@override
+  Widget build(BuildContext context) {
     final state = ref.watch(loginProvider);
+    ref.listen<LoginState>(loginProvider, (prev, next) {
+      if (!mounted) return;
+
+      // ✅ defer side effects
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+
+        if (next.isLoggedIn && prev?.isLoggedIn != true) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const MainPage()),
+          );
+        }
+
+        if (next.error != null && prev?.error != next.error) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(next.error!)),
+          );
+        }
+      });
+          });
+  // void initState() {
+  //   super.initState();
+
+  //   ref.listen<LoginState>(loginProvider, (prev, next) {
+  //     if (!mounted) return;
+
+  //     if (next.isLoggedIn && prev?.isLoggedIn != true) {
+  //       Navigator.pushReplacement(
+  //         context,
+  //         MaterialPageRoute(builder: (_) => const MainPage()),
+  //       );
+  //     }
+
+  //     if (next.error != null && prev?.error != next.error) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text(next.error!)),
+  //       );
+  //     }
+  //   }
+  //   );
+  // }
+  // @override
+  // Widget build(BuildContext context) {
+  //    final state = ref.watch(loginProvider);
+   
+  
+   
 
     // Autofill saved email (once)
     // if (state.email != null && _emailController.text.isEmpty) {
@@ -128,4 +165,5 @@ class LoginPage extends ConsumerWidget {
   bool isValidPin(String pin) {
     return pin.length >= 4 && int.tryParse(pin) != null;
   }
-}
+  
+  }

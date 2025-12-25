@@ -28,7 +28,7 @@ class _TransactionTileState extends ConsumerState<TransactionTile> {
 
   @override
   Widget build(BuildContext context) {
-    print('${widget.transaction.category}=${widget.transaction.editedLocally}');
+   // print('${widget.transaction.category}=${widget.transaction.editedLocally}');
     return Column(
       children: [
        ListTile(

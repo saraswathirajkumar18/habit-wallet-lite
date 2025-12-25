@@ -4,7 +4,7 @@ import '../../domain/summary_model.dart';
 import '../../data/summary_repository.dart';
 
 final summaryProvider = Provider<SummaryModel>((ref) {
-  final transactions = ref.watch(transactionProvider);
+  //final transactions = ref.watch(transactionProvider);
   final repo = SummaryRepository(ref.read(transactionProvider.notifier).repo);
 
   return repo.getMonthlySummary();

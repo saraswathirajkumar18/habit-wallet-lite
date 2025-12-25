@@ -15,7 +15,7 @@ class AddTransactionPage extends ConsumerStatefulWidget {
 }
 
 class _AddTransactionPageState extends ConsumerState<AddTransactionPage> {
-List<PlatformFile> _attachments = [];
+final List<PlatformFile> _attachments = [];
 
   final _amountController = TextEditingController();
   final _noteController = TextEditingController();
@@ -40,13 +40,13 @@ List<PlatformFile> _attachments = [];
     );
 
     if (date == null) return;
-
+    if (!mounted) return;
     final time = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.fromDateTime(_selectedDate),
     );
 
-    if (time == null) return;
+    if (!mounted || time == null) return;
 
     setState(() {
       _selectedDate = DateTime(

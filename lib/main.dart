@@ -3,7 +3,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:habit_wallet_lite/core/providers/language_provider.dart';
 import 'package:habit_wallet_lite/core/providers/theme_provider.dart';
-import 'package:habit_wallet_lite/features/auth/presentation/login_page.dart';
 import 'package:habit_wallet_lite/features/splash_screen.dart';
 import 'package:habit_wallet_lite/features/transactions/core/db/hive_boxes.dart';
 import 'package:habit_wallet_lite/features/transactions/data/models/transaction_model.dart';

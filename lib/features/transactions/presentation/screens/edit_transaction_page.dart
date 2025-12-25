@@ -58,13 +58,15 @@ class _EditTransactionPageState
     );
 
     if (date == null) return;
+    if (!mounted) return;
 
     final time = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.fromDateTime(_selectedDate),
     );
+    if (!mounted || time == null) return;
 
-    if (time == null) return;
+    //if (time == null) return;
 
     setState(() {
       _selectedDate = DateTime(
