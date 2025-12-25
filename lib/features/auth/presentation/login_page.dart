@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:habit_wallet_lite/features/main_page.dart';
 
 import 'login_provider.dart';
 
 
 class LoginPage extends ConsumerStatefulWidget {
-  LoginPage({super.key});
+  const LoginPage({super.key});
   
   @override
   ConsumerState<LoginPage> createState() => _LoginPageState();
@@ -15,12 +14,16 @@ class LoginPage extends ConsumerStatefulWidget {
 class _LoginPageState extends ConsumerState<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _pinController = TextEditingController();
-@override
-
+ @override
+  void dispose() {
+    _emailController.dispose();
+    _pinController.dispose();
+    super.dispose();
+  }
 @override
   Widget build(BuildContext context) {
     final state = ref.watch(loginProvider);
-    ref.listen<LoginState>(loginProvider, (prev, next) {
+   /* ref.listen<LoginState>(loginProvider, (prev, next) {
       if (!mounted) return;
 
       // ✅ defer side effects
@@ -33,6 +36,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             MaterialPageRoute(builder: (_) => const MainPage()),
           );
         }
+        if (!next.isLoggedIn && prev?.isLoggedIn == true) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (_) => LoginPage()),
+          (_) => false,
+        );
+      }
 
         if (next.error != null && prev?.error != next.error) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -41,6 +51,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         }
       });
           });
+  
+  */
   // void initState() {
   //   super.initState();
 

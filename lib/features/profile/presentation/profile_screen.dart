@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:habit_wallet_lite/core/providers/language_provider.dart';
 import 'package:habit_wallet_lite/core/providers/theme_provider.dart';
-import 'package:habit_wallet_lite/features/auth/presentation/login_page.dart';
 import 'package:habit_wallet_lite/features/auth/presentation/login_provider.dart';
 
 
@@ -64,10 +63,10 @@ class ProfileScreen extends ConsumerWidget {
                 ),
                 onPressed: () {
                   ref.read(loginProvider.notifier).logout();
-                  Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => LoginPage()),
-        );
+        //           Navigator.pushReplacement(
+        //   context,
+        //   MaterialPageRoute(builder: (_) => LoginPage()),
+        // );
                 },
               ),
             ),
