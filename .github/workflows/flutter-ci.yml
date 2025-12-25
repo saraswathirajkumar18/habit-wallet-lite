@@ -1,3 +1,53 @@
+# name: Flutter CI
+
+# on:
+#   push:
+#     branches:
+#       - master
+#   pull_request:
+#     branches:
+#       - master
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout repo
+#         uses: actions/checkout@v4
+
+#       - name: Setup Flutter
+#         uses: subosito/flutter-action@v2
+#         with:
+#           channel: stable
+
+#       - name: Flutter version
+#         run: flutter --version
+
+#       - name: Install dependencies
+#         run: flutter pub get
+
+#       - name: Flutter Analyze
+#         run: flutter analyze
+
+#       - name: Flutter Test with Coverage
+#         run: flutter test --coverage
+
+#       - name: Build Release APK
+#         run: flutter build apk --release
+
+#       - name: Upload coverage report
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: coverage-report
+#           path: coverage/
+
+#       - name: Upload release APK
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: release-apk
+#           path: build/app/outputs/flutter-apk/app-release.apk
+
 name: Flutter CI
 
 on:
@@ -13,36 +63,50 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      # 1️⃣ Checkout source
+      - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2️⃣ Setup Flutter (PINNED VERSION ✅)
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.27.3'
           channel: stable
 
+      # 3️⃣ Verify Flutter
       - name: Flutter version
         run: flutter --version
 
+      # 4️⃣ Install dependencies (generates flutter_gen)
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Flutter Analyze
+      # 5️⃣ Generate localization files (flutter_gen)
+      - name: Generate l10n files
+        run: flutter gen-l10n
+
+      # 6️⃣ Analyze code
+      - name: Flutter analyze
         run: flutter analyze
 
-      - name: Flutter Test with Coverage
+      # 7️⃣ Run tests with coverage
+      - name: Flutter test
         run: flutter test --coverage
 
-      - name: Build Release APK
+      # 8️⃣ Build release APK
+      - name: Build APK
         run: flutter build apk --release
 
-      - name: Upload coverage report
+      # 9️⃣ Upload coverage report
+      - name: Upload coverage
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: coverage/
 
-      - name: Upload release APK
+      # 🔟 Upload APK
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: release-apk
